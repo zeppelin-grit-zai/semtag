@@ -11,14 +11,14 @@ NUMERIC_REGEX='^[0-9]+$'
 MAX_BRANCH_LENGTH=50
 
 # Global variables
-FIRST_VERSION="v0.0.0"
+FIRST_VERSION="0.0.0"
 finalversion=$FIRST_VERSION
 lastversion=$FIRST_VERSION
 hasversiontag="false"
 scope="patch"
 displayonly="false"
 forcetag="false"
-prefix="v"
+prefix=""
 forcedversion=
 versionname=
 identifier=
@@ -98,7 +98,7 @@ while getopts "v:s:ofp" opt; do
   esac
 done
 
-# Try to programmatically fetch the default branch. Go by the first remote HEAD found, otherwise default to `master`.
+# Try to programmatically fetch the default branch. Go by the first remote HEAD found, otherwise default to `main`.
 # $1 The variable to store the result
 function get_default_branch {
   local __result=$1
@@ -114,7 +114,7 @@ function get_default_branch {
     done
   fi
 
-  eval "${__result}=${__default_branch:-master}"
+  eval "${__result}=${__default_branch:-main}"
 }
 
 # Gets a string with the version and returns an array of maximum size of 5 with all the parts of the sematinc version
@@ -644,7 +644,7 @@ function get_current {
     local __buildinfo="$(git rev-parse --short HEAD)"
     local __currentbranch="$(git rev-parse --abbrev-ref HEAD | cut -c1-$MAX_BRANCH_LENGTH)"
     get_default_branch default_branch
-    if [ "$__currentbranch" != "master" ]; then
+    if [ "$__currentbranch" != "main" ]; then
       __buildinfo="$__currentbranch.$__buildinfo"
     fi
 
